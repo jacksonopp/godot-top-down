@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=2]
+[gd_scene load_steps=58 format=2]
 
 [ext_resource path="res://src/Actors/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/World/Bush.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Assets/World/CliffTileset.png" type="Texture" id=5]
 [ext_resource path="res://src/World/Grass.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/Actors/Bat.tscn" type="PackedScene" id=7]
+[ext_resource path="res://src/UI/HeartsUI.tscn" type="PackedScene" id=8]
 
 [sub_resource type="TileSet" id=1]
 0/name = "DirtTileset.png 0"
@@ -506,7 +507,7 @@ tile_data = PoolIntArray( 1, 0, 0, 2, 0, 2, 5, 0, 196608, 6, 0, 196609, 7, 0, 19
 [node name="YSort" type="YSort" parent="."]
 
 [node name="Player" parent="YSort" instance=ExtResource( 1 )]
-position = Vector2( 152, 104 )
+position = Vector2( 272, 144 )
 
 [node name="Bushes" type="YSort" parent="YSort"]
 
@@ -559,4 +560,5 @@ position = Vector2( 224, 64 )
 
 [node name="Bat" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( 144, 48 )
-knockback_friction = 150
+
+[node name="HeartsUI" parent="." instance=ExtResource( 8 )]

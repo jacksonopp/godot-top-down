@@ -23,6 +23,7 @@ onready var stats = $Stats
 onready var liveAnimation: AnimatedSprite = $LiveAnimation
 onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 onready var playerDetectionZone: PlayerDetectionZone = $PlayerDetectionZone
+onready var hurtbox = $Hurtbox
 
 # Called when the node enters the scene tree for the first time.refusing to merge unrelated histories
 func _ready() -> void:
@@ -64,6 +65,7 @@ func chase_player(delta: float) -> void:
 func _on_Hurtbox_area_entered(area: Area2D) -> void:
 	stats.health -= area.damage
 	knockback = area.knockback_vector * knockback_power
+	hurtbox.create_hit_effect()
 	
 
 func _on_Stats_no_health() -> void:
