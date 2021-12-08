@@ -10,9 +10,9 @@ enum {
 
 export var friction = 200
 export var knockback_power = 100
-
 export var acceleration = 300
 export var max_speed = 50
+export var soft_collision_amt = 400
 
 var velocity = Vector2.ZERO
 var knockback = Vector2.ZERO
@@ -24,13 +24,12 @@ onready var liveAnimation: AnimatedSprite = $LiveAnimation
 onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 onready var playerDetectionZone: PlayerDetectionZone = $PlayerDetectionZone
 onready var hurtbox = $Hurtbox
+onready var softCollision = $SoftCollision
 
 # Called when the node enters the scene tree for the first time.refusing to merge unrelated histories
 func _ready() -> void:
 	liveAnimation.play()
 	animationPlayer.play("FlyShadow")
-	print(stats.max_health)
-	print(stats.health)
 
 func _physics_process(delta: float) -> void:
 	knockback = knockback.move_toward(Vector2.ZERO, friction * delta)
@@ -45,7 +44,9 @@ func _physics_process(delta: float) -> void:
 		CHASE:
 			chase_player(delta)
 		
-	liveAnimation.flip_h = velocity.x < 0
+
+	if softCollision.is_colliding():
+		velocity += softCollision.get_push_vector() * delta * soft_collision_amt
 	velocity = move_and_slide(velocity)
 
 func seek_player() -> void:
@@ -60,6 +61,8 @@ func chase_player(delta: float) -> void:
 	if player != null:
 		var direction = (player.global_position - global_position).normalized()
 		velocity = velocity.move_toward(direction * max_speed, acceleration * delta)
+		
+	liveAnimation.flip_h = velocity.x < 0
 	
 
 func _on_Hurtbox_area_entered(area: Area2D) -> void:

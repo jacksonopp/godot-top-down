@@ -32,9 +32,7 @@ func _on_Timer_timeout() -> void:
 	self.invincible = false
 
 func _on_Hurtbox_invincibility_started() -> void:
-	print("invincible: ", !monitorable)
 	set_deferred("monitorable",  false)
 
 func _on_Hurtbox_invincibility_ended() -> void:
-	print("invincible: ", !monitorable)
 	monitorable = true

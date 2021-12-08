@@ -38,6 +38,7 @@ func _physics_process(delta: float) -> void:
 			attack_state(delta)
 			
 	if Input.is_action_just_pressed("roll"):
+		stats.max_health += 1
 		state = ROLL
 	elif Input.is_action_just_pressed("attack"):
 		state = ATTACK
@@ -103,7 +104,6 @@ func set_animation_vector(input_vector: Vector2) -> void:
 
 # When an enemy hits the player
 func _on_Hurtbox_area_entered(area: Area2D) -> void:
-	print("something entered")
 	if state != ROLL and !hurtbox.invincible:
 		stats.health -= 1
 		hurtbox.start_invincibility(invincibility_time)
