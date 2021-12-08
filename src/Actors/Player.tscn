@@ -650,7 +650,6 @@ friction = 800
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 0, -10 )
-current = true
 zoom = Vector2( 0.75, 0.75 )
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
