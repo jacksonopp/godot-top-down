@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=2]
+[gd_scene load_steps=59 format=2]
 
 [ext_resource path="res://src/Actors/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/World/Bush.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://src/World/Grass.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/Actors/Bat.tscn" type="PackedScene" id=7]
 [ext_resource path="res://src/UI/HeartsUI.tscn" type="PackedScene" id=8]
+[ext_resource path="res://src/Cameras/Camera2D.tscn" type="PackedScene" id=9]
 
 [sub_resource type="TileSet" id=1]
 0/name = "DirtTileset.png 0"
@@ -504,15 +505,20 @@ collision_mask = 0
 format = 1
 tile_data = PoolIntArray( 1, 0, 0, 2, 0, 2, 5, 0, 196608, 6, 0, 196609, 7, 0, 196609, 8, 0, 196609, 9, 0, 196610, 65537, 0, 131072, 65538, 0, 131074, 196610, 0, 3, 196614, 0, 0, 196615, 0, 2, 196617, 0, 3, 262145, 0, 0, 262146, 0, 131080, 262147, 0, 2, 262150, 0, 131072, 262151, 0, 131074, 262153, 0, 65539, 327681, 0, 131072, 327682, 0, 131073, 327683, 0, 131074, 327689, 0, 131075 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 272, 144 )
-current = true
-smoothing_enabled = true
+[node name="Camera2D" parent="." instance=ExtResource( 9 )]
+position = Vector2( 160, 96 )
+zoom = Vector2( 0.75, 0.75 )
+
+[node name="TopLeft" parent="Camera2D/Limits" index="0"]
+position = Vector2( -96, -56 )
+
+[node name="BottomRight" parent="Camera2D/Limits" index="1"]
+position = Vector2( 400, 248 )
 
 [node name="YSort" type="YSort" parent="."]
 
 [node name="Player" parent="YSort" instance=ExtResource( 1 )]
-position = Vector2( 272, 144 )
+position = Vector2( 160, 96 )
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="YSort/Player"]
 remote_path = NodePath("../../../Camera2D")
@@ -575,3 +581,5 @@ position = Vector2( 136, 32 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HeartsUI" parent="CanvasLayer" instance=ExtResource( 8 )]
+
+[editable path="Camera2D"]
