@@ -1,20 +1,26 @@
 extends Node2D
 
+class_name WanderController
 
-# Declare member variables here. Examples:
-# var a: int = 2
-# var b: String = "text"
+export(int) var wander_range = 32
 
+onready var start_position = global_position
+onready var target_position = global_position
 
-# Called when the node enters the scene tree for the first time.
+onready var timer = $Timer
+
 func _ready() -> void:
-	pass # Replace with function body.
+	update_target_position()
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-#	pass
-
+func update_target_position() -> void:
+	var target_vector := Vector2(rand_range(-wander_range, wander_range), rand_range(-wander_range, wander_range))
+	target_position = start_position + target_vector
+	
+func get_time_left() -> float:
+	return timer.time_left
+	
+func start_wander_timer(duration: float) -> void:
+	timer.start(duration)
 
 func _on_Timer_timeout() -> void:
-	pass # Replace with function body.
+	update_target_position()

@@ -8,7 +8,7 @@ export var time_to_free = 1.0
 onready var grassSprite = $GrassSprite
 onready var grassHurtbox = $Hurtbox/CollisionShape2D
 
-func _on_Hurtbox_area_entered(area: Area2D) -> void:
+func _on_Hurtbox_area_entered(_area: Area2D) -> void:
 	destroy_grass()
 	queue_free()
 

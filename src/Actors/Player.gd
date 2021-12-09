@@ -10,6 +10,8 @@ enum {
 	ATTACK
 }
 
+const PlayerHurtSound = preload("res://src/Actors/PlayerHurtSound.tscn")
+
 var state = MOVE
 var roll_vector = Vector2.LEFT
 var stats = PlayerStats
@@ -19,12 +21,14 @@ onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var swordHitbox = $HitboxPivot/SwordHitbox
 onready var hurtbox = $Hurtbox
+onready var blinkAnimationPlayer = $BlinkAnimationPlayer
 
 # runs when ready
 func _ready():
 	animationTree.active = true
 	swordHitbox.knockback_vector = roll_vector
 	stats.connect("no_health", self, "queue_free")
+	blinkAnimationPlayer.play("Stop")
 
 # Runs every physics frame
 func _physics_process(delta: float) -> void:
@@ -38,7 +42,6 @@ func _physics_process(delta: float) -> void:
 			attack_state(delta)
 			
 	if Input.is_action_just_pressed("roll"):
-		stats.max_health += 1
 		state = ROLL
 	elif Input.is_action_just_pressed("attack"):
 		state = ATTACK
@@ -56,7 +59,7 @@ func move_state(delta: float) -> void:
 		animationState.travel("Idle")
 
 # Roll state part of state machine
-func roll_state(delta: float) -> void:
+func roll_state(_delta: float) -> void:
 	velocity = roll_vector * roll_speed
 	animationState.travel("Roll")
 	move()
@@ -103,8 +106,18 @@ func set_animation_vector(input_vector: Vector2) -> void:
 		animationTree.set("parameters/Roll/blend_position", input_vector)
 
 # When an enemy hits the player
-func _on_Hurtbox_area_entered(area: Area2D) -> void:
+func _on_Hurtbox_area_entered(area: HitBox) -> void:
 	if state != ROLL and !hurtbox.invincible:
-		stats.health -= 1
+		stats.health -= area.damage
 		hurtbox.start_invincibility(invincibility_time)
 		hurtbox.create_hit_effect()
+		var playerHurtSound = PlayerHurtSound.instance()
+		get_tree().current_scene.add_child(playerHurtSound)
+
+
+func _on_Hurtbox_invincibility_started() -> void:
+	blinkAnimationPlayer.play("Start")
+
+
+func _on_Hurtbox_invincibility_ended() -> void:
+	blinkAnimationPlayer.play("Stop")
